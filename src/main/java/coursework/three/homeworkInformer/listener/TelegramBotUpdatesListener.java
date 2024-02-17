@@ -9,11 +9,8 @@ import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
@@ -44,23 +41,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 return;
             }
 
-            if (noteService.addNotification(update.message().text(), update.message().chat().id())) {
-                telegramBot.execute(new SendMessage(update.message().chat().id(), "Notice added"));
-            } else {
-                telegramBot.execute(new SendMessage(update.message().chat().id(), "Wrong command"));
-            }
+            telegramBot.execute(new SendMessage(update.message().chat().id(),
+                    noteService.addNotification(update.message().text(), update.message().chat().id()) ?
+                            "Notice added" : "Wrong command"));
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
-    }
-
-    @Scheduled(cron = "0 * * * * *")
-    public void everyMinute() {
-        logger.debug("everyMinute()");
-        LocalDateTime currMinute = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
-        noteService.getTasksofMinute(currMinute).forEach(task -> {
-                    telegramBot.execute(new SendMessage(task.getChatId(), task.getMessage()));
-                    logger.info(task.toString());
-                }
-        );
     }
 }

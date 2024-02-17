@@ -8,7 +8,5 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface NotificationTaskRepository extends JpaRepository<NotificationTask, Long> {
-    @Query(value = "SELECT * FROM notifications WHERE date = ?1",
-            nativeQuery = true)
-    List<NotificationTask> getTasksofMinute(LocalDateTime minute);
+    List<NotificationTask> findAllByDate(LocalDateTime minute);
 }

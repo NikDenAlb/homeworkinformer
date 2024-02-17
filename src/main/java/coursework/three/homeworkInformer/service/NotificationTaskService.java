@@ -32,7 +32,7 @@ public class NotificationTaskService {
         return out;
     }
 
-    public List<NotificationTask> getTasksofMinute(LocalDateTime minute) {
-        return repository.getTasksofMinute(minute);
+    public List<NotificationTask> findAllByDate(LocalDateTime minute) {
+        return repository.findAllByDate(minute);
     }
 }

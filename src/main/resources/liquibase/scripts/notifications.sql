@@ -3,7 +3,7 @@
 -- changeset denik:1
 CREATE TABLE notifications(
     id           SERIAL PRIMARY KEY,
-    chat_id      INTEGER,
+    chat_id      BIGINT,
     message      TEXT,
     date         TIMESTAMP
 )
