@@ -34,4 +34,10 @@ public class NotificationTaskService {
     public List<NotificationTask> findAllByDate(LocalDateTime minute) {
         return repository.findAllByDate(minute);
     }
+
+    public List<NotificationTask> deleteAllOld(LocalDateTime minute) {
+        List<NotificationTask> out = repository.findAllByDateLessThan(minute);
+        repository.deleteAll(out);
+        return out;
+    }
 }
