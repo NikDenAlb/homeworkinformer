@@ -15,7 +15,6 @@ public class NotificationTaskService {
     private static final Pattern PATTERN = Pattern.compile("([0-9\\.\\:\\s]{16})(\\s)([\\W+]+)");
     private final NotificationTaskRepository repository;
 
-
     public NotificationTaskService(NotificationTaskRepository repository) {
         this.repository = repository;
     }

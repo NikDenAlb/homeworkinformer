@@ -2,7 +2,7 @@ package coursework.three.homeworkInformer.shelduled;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
-import coursework.three.homeworkInformer.listener.TelegramBotUpdatesListener;
+import coursework.three.homeworkInformer.repository.NotificationTaskRepository;
 import coursework.three.homeworkInformer.service.NotificationTaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +17,14 @@ import java.time.temporal.ChronoUnit;
 public class Schelduled {
 
     @Autowired
-    private  TelegramBot telegramBot;
+    private TelegramBot telegramBot;
     @Autowired
-    private  NotificationTaskService noteService;
+    private NotificationTaskService noteService;
 
-    private Logger logger = LoggerFactory.getLogger(Schelduled.class);
+    @Autowired
+    private NotificationTaskRepository repository;
+
+    private final Logger logger = LoggerFactory.getLogger(Schelduled.class);
 
     @Scheduled(cron = "0 * * * * *")
     public void everyMinute() {
@@ -36,6 +39,7 @@ public class Schelduled {
 
     @Scheduled(cron = "@weekly")
     public void weekCleaning() {
-        logger.debug("weekCleaning()");
+        logger.debug("weeklyCleaning()");
+        repository.deleteAll(repository.findAllByDateLessThan(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)));
     }
 }
